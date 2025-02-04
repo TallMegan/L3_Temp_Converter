@@ -55,7 +55,7 @@ class Converter:
             # creates the button itself
             self.make_button = Button(self.button_frame,
                                       text=item[0], bg=item[1],
-                                      fg="FFFFFF", font=("Arial", "12", "bold"),
+                                      fg="#FFFFFF", font=("Arial", "12", "bold"),
                                       width=12, command=item[2])
 
             # adjusts the positioning of each button
