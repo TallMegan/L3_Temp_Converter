@@ -74,38 +74,38 @@ class Converter:
         function or shows a custom error
         """
 
-        print("Min Temp: ", min_temp)
-
         # retrieve temperature to be converted
         to_convert = self.temp_entry.get()
-        print("to convert", to_convert)
 
         # reset label and entry box (if we had an error)
-        self.answer_error.config(fg="#004C99")
+        self.answer_error.config(fg="#004C99", font=("Arial", "13", "bold"))
         self.temp_entry.config(bg="#FFFFFF")
+
+        has_errors = "no"
 
         try:
             to_convert = float(to_convert)
             if to_convert >= min_temp:
-                error = "none"
-                self.convert(min_temp)
+                error = "no"
+                self.convert(min_temp, to_convert)
             else:
-                error = "too low"
+                error = "yes"
 
         except ValueError:
-            error = "please enter a number"
+            error = f"Enter a number more than / equal to {min_temp}"
 
         # checks the if the error message is necessary
-        if error != "none":
-            self.answer_error.config(text=error, fg="#9C0000")
+        if error != "no":
+            self.answer_error.config(text=error, fg="#9C0000", font=("Arial", "10", "bold"))
             self.temp_entry.config(bg="#F4CCCC")
             self.temp_entry.delete(0, END)
-    def convert(self, min_temp):
+
+    def convert(self, min_temp, to_convert):
 
         if min_temp == c.ABS_ZERO_CELSIUS:
-            self.answer_error.config(text="Converting to F")
+            self.answer_error.config(text=f"Converting {to_convert}°C to °F")
         else:
-            self.answer_error.config(text="Converting to C")
+            self.answer_error.config(text=f"Converting {to_convert}°F to °C")
 
 
 # main routine
