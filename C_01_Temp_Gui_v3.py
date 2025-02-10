@@ -1,6 +1,7 @@
 from tkinter import *
 import all_constants as c
 
+
 class Converter:
     """
     Temperature conversion tool (C to F or F to C)
@@ -30,9 +31,9 @@ class Converter:
         self.temp_entry.grid(row=2, padx=10, pady=10)
 
         error = "Please enter a number"
-        self.temp_error = Label(self.temp_frame, text=error,
-                                fg="#9C0000")
-        self.temp_error.grid(row=3)
+        self.answer_error = Label(self.temp_frame, text=error,
+                                  fg="#004C99", font=("Arial", "14", "bold"))
+        self.answer_error.grid(row=3)
 
         # Conversion, help and history / export buttons
         self.button_frame = Frame(self.temp_frame)
@@ -40,8 +41,8 @@ class Converter:
 
         # button list (button text | bg colour | command | row | column)
         button_details_list = [
-            ["To Celsius", "#990099", lambda:self.check_temp(c.ABS_ZERO_FAHRENHEIT), 0, 0],
-            ["To Fahrenheit", "#009900", lambda:self.check_temp(c.ABS_ZERO_CELSIUS), 0, 1],
+            ["To Celsius", "#990099", lambda: self.check_temp(c.ABS_ZERO_FAHRENHEIT), 0, 0],
+            ["To Fahrenheit", "#009900", lambda: self.check_temp(c.ABS_ZERO_CELSIUS), 0, 1],
             ["Help / Info", "#CC6600", "", 1, 0],
             ["History / Export", "#004C99", "", 1, 1]
         ]
@@ -51,7 +52,6 @@ class Converter:
 
         # creates the buttons
         for item in button_details_list:
-
             # creates the button itself
             self.make_button = Button(self.button_frame,
                                       text=item[0], bg=item[1],
@@ -68,7 +68,44 @@ class Converter:
         self.to_history_button = self.button_ref_list[3].config(state=DISABLED)
 
     def check_temp(self, min_temp):
+
+        """
+        Checks the temperature is valid and either invokes calculation
+        function or shows a custom error
+        """
+
         print("Min Temp: ", min_temp)
+
+        # retrieve temperature to be converted
+        to_convert = self.temp_entry.get()
+        print("to convert", to_convert)
+
+        # reset label and entry box (if we had an error)
+        self.answer_error.config(fg="#004C99")
+        self.temp_entry.config(bg="#FFFFFF")
+
+        try:
+            to_convert = float(to_convert)
+            if to_convert >= min_temp:
+                error = "none"
+                self.convert(min_temp)
+            else:
+                error = "too low"
+
+        except ValueError:
+            error = "please enter a number"
+
+        # checks the if the error message is necessary
+        if error != "none":
+            self.answer_error.config(text=error, fg="#9C0000")
+            self.temp_entry.config(bg="#F4CCCC")
+            self.temp_entry.delete(0, END)
+    def convert(self, min_temp):
+
+        if min_temp == c.ABS_ZERO_CELSIUS:
+            self.answer_error.config(text="Converting to F")
+        else:
+            self.answer_error.config(text="Converting to C")
 
 
 # main routine
