@@ -45,15 +45,25 @@ class DisplayHelp:
                                         font=("Arial", "14", "bold"))
         self.help_heading_label.grid(row=0)
 
+        help_text = "To use the program, simply enter the temperature you wish " \
+                    "to convert and then choose to convert " \
+                    "to either degree celsius or Fahrenheit.. \n\n Note that " \
+                    "-273 degrees C (-459 F) is absolute zero (the " \
+                    "coldest possible temperature). If you try to convert a temperature " \
+                    "that is less than -273 " \
+                    "degrees C you will get an error message. To see your calculation " \
+                    "history and export it to a text " \
+                    "file, please click the History / Export button"
+
         self.help_text_label = Label(self.help_frame,
-                                     text="help text goes here", wraplength=350,
+                                     text=help_text, wraplength=350,
                                      justify="left")
         self.help_text_label.grid(row=1, padx=10)
 
         self.dismiss_button = Button(self.help_frame,
                                      font=("Arial", "12", "bold"),
                                      text="Dismiss", bg="#CC6600",
-                                     fg="#FFFFFF")
+                                     fg="#FFFFFF", command=self.close_help)
         self.dismiss_button.grid(row=2, padx=10, pady=10)
 
         # list and loop to set background colour on
@@ -63,6 +73,8 @@ class DisplayHelp:
         for item in recolour_list:
             item.config(bg=background)
 
+    def close_help(self):
+        self.help_box.destroy()
 
 # main routine
 if __name__ == "__main__":
