@@ -1,4 +1,5 @@
 from tkinter import *
+from functools import partial  # to prevent unwanted windows
 
 
 class Converter:
@@ -24,17 +25,28 @@ class Converter:
         self.to_help_button.grid(row=1, padx=5, pady=5)
 
     def to_help(self):
-        DisplayHelp()
+        """
+        Opens help dialogue box and disables help button
+        (so that users can't create multiple help boxes).
+        """
+        DisplayHelp(self)
 
 
 class DisplayHelp:
 
-    def __init__(self):
+    def __init__(self, partner):
         # setup dialogue box and background colour
         background = "#ffe6cc"
 
         # Toplevel() makes a new dialogue box
         self.help_box = Toplevel()
+
+        # disable help button
+        partner.to_help_button.config(state=DISABLED)
+
+        # if users press cross at top, closes help and
+        # 'releases' help button
+        self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help, partner))
 
         self.help_frame = Frame(self.help_box, width=300,
                                 height=200)
@@ -63,7 +75,8 @@ class DisplayHelp:
         self.dismiss_button = Button(self.help_frame,
                                      font=("Arial", "12", "bold"),
                                      text="Dismiss", bg="#CC6600",
-                                     fg="#FFFFFF", command=self.close_help)
+                                     fg="#FFFFFF",
+                                     command=partial(self.close_help, partner))
         self.dismiss_button.grid(row=2, padx=10, pady=10)
 
         # list and loop to set background colour on
@@ -73,8 +86,14 @@ class DisplayHelp:
         for item in recolour_list:
             item.config(bg=background)
 
-    def close_help(self):
+    def close_help(self, partner):
+        """
+        Closes help dialogue box (and enables help button)
+        """
+        # Put help button back to normal...
+        partner.to_help_button.config(state=NORMAL)
         self.help_box.destroy()
+
 
 # main routine
 if __name__ == "__main__":
