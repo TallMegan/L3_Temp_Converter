@@ -106,6 +106,13 @@ class HistoryExport:
                                       command=btn[2])
             self.make_button.grid(row=btn[3], column=btn[4], padx=10, pady=10)
 
+    def close_history(self, partner):
+        """
+        Closes history dialogue box (and enables history button)
+        """
+        # put history button back to normal
+        partner.to_history_button.config(state=NORMAL)
+        self.history_box.destroy()
 
 # main routine
 if __name__ == "__main__":
