@@ -2,6 +2,7 @@ from tkinter import *
 from functools import partial  # to prevent unwanted windows
 import all_constants as c
 
+
 class Converter:
     """
     Temperature conversion tool (C to F or F to C)
@@ -59,11 +60,33 @@ class HistoryExport:
         # background colour and text for calculation area
         if len(calculations) <= c.MAX_CALCS:
             calc_back = "#D5E804"
-            calc_amount = "all your"
+            calc_amount = "all your your calculations"
         else:
             calc_back = "#ffe6cc"
             calc_amount = (f"your recent calculations -"
                            f"showing {c.MAX_CALCS} / {len(calculations)}")
+
+        # create string from calculations list (newest calculations first)
+        newest_first_string = ""
+        newest_first_list = list(reversed(calculations))
+
+        # last item added in outside the for loop so that the spacing is correct
+        if len(newest_first_list) <= c.MAX_CALCS:
+
+            for item in newest_first_list[:-1]:
+                newest_first_string += item + "\n"
+
+            newest_first_string += newest_first_list[-1]
+
+        # if we have more than five items
+        else:
+            # makes it so that the string will only contain
+            # the 5 most recent calculations - MAX_CALCS = 5, so it
+            # takes the 5 most recent inside the list because it's actually just [5]
+            for item in newest_first_list[:c.MAX_CALCS - 1]:
+                newest_first_string += item + "\n"
+
+            newest_first_string += newest_first_list[c.MAX_CALCS - 1]
 
         # strings for 'long' labels...
         recent_intro_txt = f"Below are {calc_amount} calculations " \
@@ -79,7 +102,7 @@ class HistoryExport:
         history_labels_list = [
             ["History / Export", ("Arial", "16", "bold"), None],
             [recent_intro_txt, ("Arial", "11",), None],
-            ["History / Export", ("Arial", "14"), calc_back],
+            [newest_first_string, ("Arial", "14"), calc_back],
             [export_instruction_txt, ("Arial", "11"), None],
         ]
 
@@ -122,6 +145,7 @@ class HistoryExport:
         # put history button back to normal
         partner.to_history_button.config(state=NORMAL)
         self.history_box.destroy()
+
 
 # main routine
 if __name__ == "__main__":
