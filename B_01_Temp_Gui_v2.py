@@ -157,7 +157,7 @@ class DisplayHelp:
         self.help_box = Toplevel()
 
         # disable help button
-        partner.to_history_button.config(state=DISABLED)
+        partner.to_help_button.config(state=DISABLED)
 
         # if users press cross at top, closes help and
         # 'releases' help button
@@ -206,7 +206,7 @@ class DisplayHelp:
         Closes help dialogue box (and enables help button)
         """
         # Put help button back to normal...
-        partner.to_history_button.config(state=NORMAL)
+        partner.to_help_button.config(state=NORMAL)
         self.help_box.destroy()
 
 
@@ -233,10 +233,10 @@ class HistoryExport:
         # background colour and text for calculation area
         if len(calculations) <= c.MAX_CALCS:
             calc_back = "#D5E804"
-            calc_amount = "all your your calculations"
+            calc_amount = "all your calculations"
         else:
             calc_back = "#ffe6cc"
-            calc_amount = (f"your recent calculations -"
+            calc_amount = (f"your calculations -"
                            f"showing {c.MAX_CALCS} / {len(calculations)}")
 
         # create string from calculations list (newest calculations first)
