@@ -215,7 +215,7 @@ class HistoryExport:
     Displays history dialogue box
     """
 
-    def __init__(self, partner, calculations):
+    def __init__(self, partner, all_calculations_list):
         # setup dialogue box and background colour
 
         self.history_box = Toplevel()
@@ -231,17 +231,17 @@ class HistoryExport:
         self.help_frame.grid()
 
         # background colour and text for calculation area
-        if len(calculations) <= c.MAX_CALCS:
+        if len(all_calculations_list) <= c.MAX_CALCS:
             calc_back = "#D5E804"
             calc_amount = "all your calculations"
         else:
             calc_back = "#ffe6cc"
             calc_amount = (f"your calculations -"
-                           f"showing {c.MAX_CALCS} / {len(calculations)}")
+                           f"showing {c.MAX_CALCS} / {len(all_calculations_list)}")
 
         # create string from calculations list (newest calculations first)
         newest_first_string = ""
-        newest_first_list = list(reversed(calculations))
+        newest_first_list = list(reversed(all_calculations_list))
 
         # last item added in outside the for loop so that the spacing is correct
         if len(newest_first_list) <= c.MAX_CALCS:
@@ -269,7 +269,7 @@ class HistoryExport:
                                   "in a text file. If the filename already exists "
                                   "it will be overwritten")
 
-        calculations = ""
+        # all_calculations_list = ""
 
         # label list (label text | format | bg)
         history_labels_list = [
@@ -300,7 +300,7 @@ class HistoryExport:
 
         # button list (button text | bg colour | command | row | column)
         button_details_list = [
-            ["Export", "#004C99", lambda: self.export_data(calculations), 0, 0],
+            ["Export", "#004C99", lambda: self.export_data(all_calculations_list), 0, 0],
             ["Close", "#666666", partial(self.close_history, partner), 0, 1],
         ]
 
@@ -311,7 +311,7 @@ class HistoryExport:
                                       command=btn[2])
             self.make_button.grid(row=btn[3], column=btn[4], padx=10, pady=10)
 
-    def export_data(self, calculations):
+    def export_data(self, all_calculations_list):
 
         # get current date for the text file
         today = date.today()
@@ -336,9 +336,10 @@ class HistoryExport:
             text_file.write("***** Temperature Calculations ***** \n")
             text_file.write(f"Generated: {day}/{month}/{year}\n\n")
             text_file.write("Here is your calculation history (oldest to newest) \n")
-
+            print(all_calculations_list)
             # write the item to file
-            for item in calculations:
+            for item in all_calculations_list:
+                print(item)
                 text_file.write(item)
                 text_file.write("\n")
 
